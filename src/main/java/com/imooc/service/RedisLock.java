@@ -1,10 +1,10 @@
 package com.imooc.service;
 
-        import lombok.extern.slf4j.Slf4j;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.data.redis.core.StringRedisTemplate;
-        import org.springframework.stereotype.Component;
-        import org.springframework.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by 廖师兄
@@ -19,12 +19,13 @@ public class RedisLock {
 
     /**
      * 加锁
+     *
      * @param key
      * @param value 当前时间+超时时间
      * @return
      */
     public boolean lock(String key, String value) {
-        if(redisTemplate.opsForValue().setIfAbsent(key, value)) {
+        if (redisTemplate.opsForValue().setIfAbsent(key, value)) {
             return true;
         }
         //currentValue=A   这两个线程的value都是B  其中一个线程拿到锁
@@ -44,6 +45,7 @@ public class RedisLock {
 
     /**
      * 解锁
+     *
      * @param key
      * @param value
      */
@@ -53,7 +55,7 @@ public class RedisLock {
             if (!StringUtils.isEmpty(currentValue) && currentValue.equals(value)) {
                 redisTemplate.opsForValue().getOperations().delete(key);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("【redis分布式锁】解锁异常, {}", e);
         }
     }

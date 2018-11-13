@@ -5,7 +5,7 @@ package com.imooc.constant;
  */
 public interface CookieConstant {
 
-    String TOKEN="token";
+    String TOKEN = "token";
 
-    Integer EXPIRE=7200;
+    Integer EXPIRE = 7200;
 }

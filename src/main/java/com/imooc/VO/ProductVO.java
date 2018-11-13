@@ -11,7 +11,7 @@ import java.util.List;
  * Created by SqMax on 2018/3/17.
  */
 @Data
-public class ProductVO implements Serializable{
+public class ProductVO implements Serializable {
 
     private static final long serialVersionUID = 7097863777546530545L;
 

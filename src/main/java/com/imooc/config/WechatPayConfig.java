@@ -16,8 +16,8 @@ public class WechatPayConfig {
     private WechatAccountConfig accountConfig;
 
     @Bean
-    public WxPayH5Config wxPayH5Config(){
-        WxPayH5Config wxPayH5Config=new WxPayH5Config();
+    public WxPayH5Config wxPayH5Config() {
+        WxPayH5Config wxPayH5Config = new WxPayH5Config();
         wxPayH5Config.setAppId(accountConfig.getMpAppId());
         wxPayH5Config.setAppSecret(accountConfig.getMpAppSecret());
         wxPayH5Config.setMchId(accountConfig.getMchId());
@@ -27,10 +27,11 @@ public class WechatPayConfig {
 
         return wxPayH5Config;
     }
-    @Bean
-    public BestPayServiceImpl bestPayService(){
 
-        BestPayServiceImpl bestPayService=new BestPayServiceImpl();
+    @Bean
+    public BestPayServiceImpl bestPayService() {
+
+        BestPayServiceImpl bestPayService = new BestPayServiceImpl();
         bestPayService.setWxPayH5Config(wxPayH5Config());
         return bestPayService;
     }

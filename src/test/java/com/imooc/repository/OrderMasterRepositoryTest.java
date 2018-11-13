@@ -1,6 +1,6 @@
 package com.imooc.repository;
 
-import com.imooc.dataobject.OrderMaster;
+import com.imooc.entities.OrderMaster;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by SqMax on 2018/3/18.

@@ -1,4 +1,4 @@
-package com.imooc.dataobject;
+package com.imooc.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.imooc.enums.ProductStatusEnum;
@@ -18,29 +18,43 @@ import java.util.Date;
 @Entity
 @Data
 @DynamicUpdate
-public class ProductInfo implements Serializable{
+public class ProductInfo implements Serializable {
     @Id
-    private  String productId;
+    private String productId;
 
-    /**名字**/
+    /**
+     * 名字
+     **/
     private String productName;
 
-    /**单价**/
+    /**
+     * 单价
+     **/
     private BigDecimal productPrice;
 
-    /**库存**/
+    /**
+     * 库存
+     **/
     private Integer productStock;
 
-    /**描述**/
+    /**
+     * 描述
+     **/
     private String productDescription;
 
-    /**小图**/
+    /**
+     * 小图
+     **/
     private String productIcon;
 
-    /**状态，0正常，1下架**/
-    private Integer productStatus=ProductStatusEnum.UP.getCode();
+    /**
+     * 状态，0正常，1下架
+     **/
+    private Integer productStatus = ProductStatusEnum.UP.getCode();
 
-    /**类目编号**/
+    /**
+     * 类目编号
+     **/
     private Integer categoryType;
 
     private Date createTime;
@@ -48,7 +62,7 @@ public class ProductInfo implements Serializable{
     private Date updateTime;
 
     @JsonIgnore
-    public ProductStatusEnum getProductStatusEnum(){
-        return EnumUtil.getByCode(productStatus,ProductStatusEnum.class);
+    public ProductStatusEnum getProductStatusEnum() {
+        return EnumUtil.getByCode(productStatus, ProductStatusEnum.class);
     }
 }

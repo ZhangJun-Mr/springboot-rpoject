@@ -1,6 +1,6 @@
 package com.imooc.repository;
 
-import com.imooc.dataobject.ProductInfo;
+import com.imooc.entities.ProductInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by SqMax on 2018/3/17.
  */
-public interface ProductInfoRepository extends JpaRepository<ProductInfo,String>{
+public interface ProductInfoRepository extends JpaRepository<ProductInfo, String> {
 
     List<ProductInfo> findByProductStatus(Integer productStatus);
 }

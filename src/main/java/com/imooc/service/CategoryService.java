@@ -1,8 +1,7 @@
 package com.imooc.service;
 
-import com.imooc.dataobject.ProductCategory;
+import com.imooc.entities.ProductCategory;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 /**

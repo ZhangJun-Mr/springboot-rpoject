@@ -8,10 +8,10 @@ import com.google.gson.GsonBuilder;
  */
 public class JsonUtil {
 
-    public static String toJson(Object object){
-        GsonBuilder gsonBuilder=new GsonBuilder();
+    public static String toJson(Object object) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
-        Gson gson=gsonBuilder.create();
+        Gson gson = gsonBuilder.create();
         return gson.toJson(object);
     }
 }

@@ -1,6 +1,6 @@
 package com.imooc.repository;
 
-import com.imooc.dataobject.ProductCategory;
+import com.imooc.entities.ProductCategory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +12,6 @@ import javax.transaction.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by SqMax on 2018/3/17.

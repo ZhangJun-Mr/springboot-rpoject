@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * Created by SqMax on 2018/3/17.
  */
 @Data
-public class ProductInfoVO implements Serializable{
+public class ProductInfoVO implements Serializable {
 
     private static final long serialVersionUID = -3895834204864685262L;
 

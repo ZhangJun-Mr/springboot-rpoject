@@ -1,77 +1,70 @@
-package com.imooc.dto;
+package com.imooc.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.imooc.entities.OrderDetail;
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.PayStatusEnum;
-import com.imooc.utils.EnumUtil;
-import com.imooc.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by SqMax on 2018/3/18.
  */
+@Entity
 @Data
-public class OrderDTO {
+public class OrderMaster {
 
-    List<OrderDetail> orderDetailList;
     /**
      * 订单
      **/
+    @Id
     private String orderId;
+
     /**
      * 买家名字
      **/
     private String buyerName;
+
     /**
      * 卖家手机号
      **/
     private String buyerPhone;
+
     /**
      * 卖家地址
      **/
     private String buyerAddress;
+
     /**
      * 买家微信Openid
      */
     private String buyerOpenid;
+
     /**
      * 订单金额
      */
     private BigDecimal orderAmount;
+
     /**
      * 订单状态，默认为新下单
      */
-    private Integer orderStatus;
+    private Integer orderStatus = OrderStatusEnum.NEW.getCode();
+
     /**
      * 支付状态，默认为0未支付
      */
-    private Integer payStatus;
+    private Integer payStatus = PayStatusEnum.WAIT.getCode();
+
     /**
      * 创建时间
      */
-    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
+
     /**
      * 更新时间
      */
-    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
-
-    @JsonIgnore
-    public OrderStatusEnum getOrderStatusEnum() {
-        return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
-    }
-
-    @JsonIgnore
-    public PayStatusEnum getPayStatusEnum() {
-        return EnumUtil.getByCode(payStatus, PayStatusEnum.class);
-    }
-
 
 }

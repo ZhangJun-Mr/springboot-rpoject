@@ -1,6 +1,6 @@
 package com.imooc.service;
 
-import com.imooc.dataobject.SellerInfo;
+import com.imooc.entities.SellerInfo;
 
 /**
  * 卖家端
@@ -10,6 +10,7 @@ public interface SellerService {
 
     /**
      * 通过openid查询
+     *
      * @param openid
      * @return
      */
