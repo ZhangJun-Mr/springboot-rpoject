@@ -13,13 +13,6 @@ spring:
     port: 6379
 server:
   context-path: /sell
-#logging:
-#  pattern:
-#    console: "%d - %msg%n"
-##  path: F://日志
-#  file: F://日志/sell.log
-#  level:
-#    com.imooc.LoggerTest: debug
 
 # 下面是微信相关的配置
 wechat:
