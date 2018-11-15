@@ -1,16 +1,17 @@
 package com.imooc.service;
 
-import com.imooc.entities.ProductInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.dto.CartDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.imooc.entities.ProductInfo;
 
 import java.util.List;
 
 /**
  * Created by SqMax on 2018/3/17.
  */
-public interface ProductService {
+public interface ProductService extends IService<ProductInfo> {
 
     ProductInfo findOne(String productId);
 
@@ -21,9 +22,7 @@ public interface ProductService {
      */
     List<ProductInfo> findUpAll();
 
-    Page<ProductInfo> findAll(Pageable pageable);
-
-    ProductInfo save(ProductInfo productInfo);
+    IPage<ProductInfo> findAll(IPage<ProductInfo> page, ProductInfo productInfo);
 
     //加库存
     void increaseStock(List<CartDTO> cartDTOList);
@@ -32,8 +31,8 @@ public interface ProductService {
     void decreaseStock(List<CartDTO> cartDTOList);
 
     //上架
-    ProductInfo onSale(String productId);
+    boolean onSale(String productId);
 
     //下架
-    ProductInfo offSale(String productId);
+    boolean offSale(String productId);
 }

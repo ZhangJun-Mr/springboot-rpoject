@@ -3,23 +3,23 @@ package com.imooc.entities;
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.PayStatusEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by SqMax on 2018/3/18.
  */
-@Entity
 @Data
-public class OrderMaster {
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+public class OrderMaster extends BaseEntity {
 
     /**
      * 订单
      **/
-    @Id
     private String orderId;
 
     /**

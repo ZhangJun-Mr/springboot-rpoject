@@ -3,7 +3,7 @@ package com.imooc.controller;
 import com.imooc.entities.ProductCategory;
 import com.imooc.exception.SellException;
 import com.imooc.form.CategoryForm;
-import com.imooc.service.CategoryService;
+import com.imooc.service.ProductCategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,11 +27,11 @@ import java.util.Map;
 public class SellerCategoryController {
 
     @Autowired
-    private CategoryService categoryService;
+    private ProductCategoryService productCategoryService;
 
     @GetMapping("/list")
     public ModelAndView list(Map<String, Object> map) {
-        List<ProductCategory> categoryList = categoryService.findAll();
+        List<ProductCategory> categoryList = productCategoryService.findAll();
         map.put("categoryList", categoryList);
         return new ModelAndView("category/list", map);
     }
@@ -47,7 +47,7 @@ public class SellerCategoryController {
     public ModelAndView index(@RequestParam(value = "categoryId", required = false) Integer categoryId,
                               Map<String, Object> map) {
         if (categoryId != null) {
-            ProductCategory productCategory = categoryService.findOne(categoryId);
+            ProductCategory productCategory = productCategoryService.findOne(categoryId);
             map.put("category", productCategory);
         }
         return new ModelAndView("category/index", map);
@@ -73,10 +73,10 @@ public class SellerCategoryController {
         ProductCategory productCategory = new ProductCategory();
         try {
             if (form.getCategoryId() != null) {
-                productCategory = categoryService.findOne(form.getCategoryId());
+                productCategory = productCategoryService.findOne(form.getCategoryId());
             }
             BeanUtils.copyProperties(form, productCategory);
-            categoryService.save(productCategory);
+            productCategoryService.save(productCategory);
         } catch (SellException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/sell/seller/category/index");

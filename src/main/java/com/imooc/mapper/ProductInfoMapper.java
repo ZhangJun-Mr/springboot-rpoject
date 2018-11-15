@@ -1,14 +1,14 @@
-package com.imooc.repository;
+package com.imooc.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.imooc.entities.ProductInfo;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 /**
  * Created by SqMax on 2018/3/17.
  */
-public interface ProductInfoRepository extends JpaRepository<ProductInfo, String> {
+public interface ProductInfoMapper extends BaseMapper<ProductInfo> {
 
     List<ProductInfo> findByProductStatus(Integer productStatus);
 }

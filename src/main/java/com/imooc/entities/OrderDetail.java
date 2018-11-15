@@ -1,18 +1,19 @@
 package com.imooc.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.math.BigDecimal;
 
 /**
  * Created by SqMax on 2018/3/18.
  */
-@Entity
+
 @Data
-public class OrderDetail {
-    @Id
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+public class OrderDetail extends BaseEntity{
     private String detailId;
 
     /**

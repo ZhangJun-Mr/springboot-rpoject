@@ -1,4 +1,4 @@
-package com.imooc.repository;
+package com.imooc.mapper;
 
 import com.imooc.entities.OrderMaster;
 import org.junit.Assert;
@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 public class OrderMasterRepositoryTest {
 
     @Autowired
-    private OrderMasterRepository repository;
+    private OrderMasterMapper repository;
 
     private final String OPENID="110110";
 
@@ -34,7 +34,7 @@ public class OrderMasterRepositoryTest {
         orderMaster.setBuyerOpenid("110110");
         orderMaster.setOrderAmount(new BigDecimal(2.5));
 
-        OrderMaster result=repository.save(orderMaster);
+        int result=repository.updateById(orderMaster);
         Assert.assertNotNull(result);
     }
     @Test

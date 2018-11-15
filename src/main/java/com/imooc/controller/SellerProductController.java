@@ -4,7 +4,7 @@ import com.imooc.entities.ProductCategory;
 import com.imooc.entities.ProductInfo;
 import com.imooc.exception.SellException;
 import com.imooc.form.ProductForm;
-import com.imooc.service.CategoryService;
+import com.imooc.service.ProductCategoryService;
 import com.imooc.service.ProductService;
 import com.imooc.utils.KeyUtil;
 import org.springframework.beans.BeanUtils;
@@ -37,7 +37,7 @@ public class SellerProductController {
     private ProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private ProductCategoryService productCategoryService;
 
     /**
      * 列表
@@ -105,7 +105,7 @@ public class SellerProductController {
         }
 
         //查询所有的类目
-        List<ProductCategory> categoryList = categoryService.findAll();
+        List<ProductCategory> categoryList = productCategoryService.findAll();
         map.put("categoryList", categoryList);
         return new ModelAndView("product/index", map);
     }

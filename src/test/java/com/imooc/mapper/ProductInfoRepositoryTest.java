@@ -1,4 +1,4 @@
-package com.imooc.repository;
+package com.imooc.mapper;
 
 import com.imooc.entities.ProductInfo;
 import org.junit.Assert;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductInfoRepositoryTest {
 
     @Autowired
-    private ProductInfoRepository repository;
+    private ProductInfoMapper repository;
 
     @Test
     public void save(){
@@ -33,7 +33,7 @@ public class ProductInfoRepositoryTest {
         productInfo.setProductStatus(0);
         productInfo.setCategoryType(2);
 
-        ProductInfo result=repository.save(productInfo);
+        int result=repository.updateById(productInfo);
         Assert.assertNotNull(result);
     }
 

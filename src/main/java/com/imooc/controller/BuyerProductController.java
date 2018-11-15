@@ -5,7 +5,7 @@ import com.imooc.VO.ProductVO;
 import com.imooc.VO.ResultVO;
 import com.imooc.entities.ProductCategory;
 import com.imooc.entities.ProductInfo;
-import com.imooc.service.CategoryService;
+import com.imooc.service.ProductCategoryService;
 import com.imooc.service.ProductService;
 import com.imooc.utils.ResultVOUtil;
 import org.springframework.beans.BeanUtils;
@@ -30,7 +30,7 @@ public class BuyerProductController {
     private ProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private ProductCategoryService productCategoryService;
 
     @GetMapping("/list")
     @Cacheable(cacheNames = "product", key = "123", unless = "#result.getCode()!=0")
@@ -49,7 +49,7 @@ public class BuyerProductController {
         List<Integer> categoryTypeList = productInfoList.stream()
                 .map(ProductInfo::getCategoryType).collect(Collectors.toList());
 
-        List<ProductCategory> productCategoryList = categoryService.findByCategoryTypeIn(categoryTypeList);
+        List<ProductCategory> productCategoryList = productCategoryService.findByCategoryTypeIn(categoryTypeList);
 
         //3. 数据拼装
         List<ProductVO> productVOList = new ArrayList<>();

@@ -1,14 +1,14 @@
-package com.imooc.repository;
+package com.imooc.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.imooc.entities.ProductCategory;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 /**
  * Created by SqMax on 2018/3/17.
  */
-public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Integer> {
+public interface ProductCategoryMapper extends BaseMapper<ProductCategory> {
 
     List<ProductCategory> findByCategoryTypeIn(List<Integer> categoryTypeList);
 }

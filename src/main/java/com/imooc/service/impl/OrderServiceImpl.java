@@ -1,25 +1,27 @@
 package com.imooc.service.impl;
 
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.imooc.converter.OrderMaster2OrderDTOConverter;
+import com.imooc.dto.CartDTO;
+import com.imooc.dto.OrderDTO;
 import com.imooc.entities.OrderDetail;
 import com.imooc.entities.OrderMaster;
 import com.imooc.entities.ProductInfo;
-import com.imooc.dto.CartDTO;
-import com.imooc.dto.OrderDTO;
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.PayStatusEnum;
 import com.imooc.enums.ResultEnum;
 import com.imooc.exception.SellException;
-import com.imooc.repository.OrderDetailRepository;
-import com.imooc.repository.OrderMasterRepository;
+import com.imooc.mapper.OrderDetailMapper;
+import com.imooc.mapper.OrderMasterMapper;
 import com.imooc.service.*;
 import com.imooc.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -40,10 +42,10 @@ public class OrderServiceImpl implements OrderService {
     private ProductService productService;
 
     @Autowired
-    private OrderDetailRepository orderDetailRepository;
+    private OrderDetailMapper orderDetailMapper;
 
     @Autowired
-    private OrderMasterRepository orderMasterRepository;
+    private OrderMasterMapper orderMasterMapper;
 
     @Autowired
     private PayService payService;
@@ -77,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setDetailId(KeyUtil.genUniqueKey());
             orderDetail.setOrderId(orderId);
             BeanUtils.copyProperties(productInfo, orderDetail);
-            orderDetailRepository.save(orderDetail);
+            orderDetailMapper.insert(orderDetail);
 
 //            CartDTO cartDTO=new CartDTO(orderDetail.getProductId(),orderDetail.getProductQuantity());
 //            cartDTOList.add(cartDTO);
@@ -92,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
         orderMaster.setOrderAmount(orderAmount);
         orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
         orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
-        orderMasterRepository.save(orderMaster);
+        orderMasterMapper.insert(orderMaster);
 
         //4.扣库存
         List<CartDTO> cartDTOList = orderDTO.getOrderDetailList().stream().map(e ->
@@ -108,11 +110,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO findOne(String orderId) {
-        OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
+        OrderMaster orderMaster = orderMasterMapper.selectById(orderId);
         if (orderMaster == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
-        List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
+        List<OrderDetail> orderDetailList = orderDetailMapper.findByOrderId(orderId);
         if (CollectionUtils.isEmpty(orderDetailList)) {
             throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
         }
@@ -124,12 +126,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDTO> findList(String buyerOpenid, Pageable pageable) {
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerOpenid(buyerOpenid, pageable);
+    public IPage<OrderDTO> findList(IPage<OrderMaster> page, String buyerOpenid) {
+        QueryWrapper<OrderMaster> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(StringUtils.isNotEmpty(buyerOpenid),"buyer_openid", buyerOpenid);
+        IPage<OrderMaster> orderMasterPage = orderMasterMapper.selectPage(page,queryWrapper);
+        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getRecords());
+        IPage<OrderDTO> orderDTOIPage = null ;
+        BeanUtils.copyProperties(page, orderDTOIPage);
 
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
-
-        return new PageImpl<OrderDTO>(orderDTOList, pageable, orderMasterPage.getTotalElements());
+        return orderDTOIPage;
     }
 
     @Override
@@ -146,8 +151,8 @@ public class OrderServiceImpl implements OrderService {
         //修改订单状态
         orderDTO.setOrderStatus(OrderStatusEnum.CANCLE.getCode());
         BeanUtils.copyProperties(orderDTO, orderMaster);
-        OrderMaster updateResult = orderMasterRepository.save(orderMaster);
-        if (updateResult == null) {
+        int updateResult = orderMasterMapper.updateById(orderMaster);
+        if (updateResult == 0) {
             log.error("【取消订单】更新失败,orderMaster={}", orderMaster);
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
@@ -182,8 +187,8 @@ public class OrderServiceImpl implements OrderService {
         orderDTO.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDTO, orderMaster);
-        OrderMaster updateResult = orderMasterRepository.save(orderMaster);
-        if (updateResult == null) {
+        int updateResult = orderMasterMapper.updateById(orderMaster);
+        if (updateResult == 0) {
             log.error("【完结订单】更新失败,orderMaster={}", orderMaster);
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
@@ -191,15 +196,6 @@ public class OrderServiceImpl implements OrderService {
         pushMessageService.orderStatus(orderDTO);
 
         return orderDTO;
-    }
-
-    @Override
-    public Page<OrderDTO> findList(Pageable pageable) {
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findAll(pageable);
-
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
-
-        return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
     @Override
@@ -220,8 +216,8 @@ public class OrderServiceImpl implements OrderService {
         orderDTO.setPayStatus(PayStatusEnum.SUCCESS.getCode());
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDTO, orderMaster);
-        OrderMaster updateResult = orderMasterRepository.save(orderMaster);
-        if (updateResult == null) {
+        int updateResult = orderMasterMapper.updateById(orderMaster);
+        if (updateResult == 0) {
             log.error("【订单支付完成】更新失败,orderMaster={}", orderMaster);
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }

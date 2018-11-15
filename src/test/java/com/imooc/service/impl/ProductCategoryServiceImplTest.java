@@ -16,10 +16,10 @@ import java.util.List;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CategoryServiceImplTest {
+public class ProductCategoryServiceImplTest {
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private ProductCategoryServiceImpl categoryService;
     @Test
     public void findOne() {
         ProductCategory productCategory=categoryService.findOne(3);
@@ -40,8 +40,10 @@ public class CategoryServiceImplTest {
 
     @Test
     public void save() {
-        ProductCategory productCategory=new ProductCategory("男生专享",10);
-        ProductCategory result=categoryService.save(productCategory);
+        ProductCategory productCategory=new ProductCategory()
+                .setCategoryName("男生专享")
+                .setCategoryType(10);
+        boolean result=categoryService.save(productCategory);
         Assert.assertNotEquals(null,result);
     }
 }

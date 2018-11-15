@@ -1,7 +1,7 @@
 package com.imooc.service.impl;
 
 import com.imooc.entities.SellerInfo;
-import com.imooc.repository.SellerInfoRepository;
+import com.imooc.mapper.SellerInfoMapper;
 import com.imooc.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class SellerServiceImpl implements SellerService {
 
     @Autowired
-    private SellerInfoRepository repository;
+    private SellerInfoMapper repository;
 
     @Override
     public SellerInfo findSellerInfoByOpenid(String openid) {

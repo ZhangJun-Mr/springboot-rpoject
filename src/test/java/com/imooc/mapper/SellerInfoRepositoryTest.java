@@ -1,4 +1,4 @@
-package com.imooc.repository;
+package com.imooc.mapper;
 
 import com.imooc.entities.SellerInfo;
 import com.imooc.utils.KeyUtil;
@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SellerInfoRepositoryTest {
 
     @Autowired
-    private SellerInfoRepository repository;
+    private SellerInfoMapper repository;
 
     @Test
     public void save(){
@@ -27,7 +27,7 @@ public class SellerInfoRepositoryTest {
         sellerInfo.setPassword("admin");
         sellerInfo.setOpenid("abc");
 
-        SellerInfo result=repository.save(sellerInfo);
+        int result=repository.updateById(sellerInfo);
         Assert.assertNotNull(result);
     }
 

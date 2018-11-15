@@ -1,18 +1,20 @@
 package com.imooc.service.impl;
 
-import com.imooc.entities.ProductInfo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dto.CartDTO;
+import com.imooc.entities.ProductInfo;
 import com.imooc.enums.ProductStatusEnum;
 import com.imooc.enums.ResultEnum;
 import com.imooc.exception.SellException;
-import com.imooc.repository.ProductInfoRepository;
+import com.imooc.mapper.ProductInfoMapper;
 import com.imooc.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,21 +25,21 @@ import java.util.List;
  */
 @Service
 @CacheConfig(cacheNames = "product")
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl extends ServiceImpl<ProductInfoMapper, ProductInfo> implements ProductService {
 
     @Autowired
-    private ProductInfoRepository repository;
+    private ProductInfoMapper productInfoMapper;
 
     @Override
     @Cacheable(key = "1234")
     public ProductInfo findOne(String productId) {
-        return repository.findOne(productId);
+        return super.getById(productId);
     }
 
     @Override
     @CachePut(key = "1234")
-    public ProductInfo save(ProductInfo productInfo) {
-        return repository.save(productInfo);
+    public boolean save(ProductInfo productInfo) {
+        return super.save(productInfo);
     }
 
     /**
@@ -47,34 +49,35 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public List<ProductInfo> findUpAll() {
-        return repository.findByProductStatus(ProductStatusEnum.UP.getCode());
+        QueryWrapper<ProductInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("product_status", ProductStatusEnum.UP.getCode());
+        return super.list(queryWrapper);
     }
 
     @Override
-
-    public Page<ProductInfo> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public IPage<ProductInfo> findAll(IPage<ProductInfo> page, ProductInfo productInfo) {
+        QueryWrapper<ProductInfo> queryWrapper = new QueryWrapper<>();
+        return super.page(page, queryWrapper);
     }
 
     @Override
     public void increaseStock(List<CartDTO> cartDTOList) {
-
         for (CartDTO cartDTO : cartDTOList) {
-            ProductInfo productInfo = repository.findOne(cartDTO.getProductId());
+            ProductInfo productInfo = super.getById(cartDTO.getProductId());
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIT);
             }
             Integer result = productInfo.getProductStock() + cartDTO.getProductQuantity();
             productInfo.setProductStock(result);
-            repository.save(productInfo);
+            super.save(productInfo);
         }
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void decreaseStock(List<CartDTO> cartDTOList) {
         for (CartDTO cartDTO : cartDTOList) {
-            ProductInfo productInfo = repository.findOne(cartDTO.getProductId());
+            ProductInfo productInfo = super.getById(cartDTO.getProductId());
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIT);
             }
@@ -84,38 +87,38 @@ public class ProductServiceImpl implements ProductService {
             }
             productInfo.setProductStock(result);
 
-            repository.save(productInfo);
+            super.getById(productInfo);
         }
 
     }
 
     @Override
-    public ProductInfo onSale(String productId) {
-        ProductInfo productInfo = repository.findOne(productId);
+    public boolean onSale(String productId) {
+        ProductInfo productInfo = super.getById(productId);
         if (productInfo == null) {
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIT);
         }
-        if (productInfo.getProductStatusEnum() == ProductStatusEnum.UP) {
+        if (productInfo.getProductStatus().equals(ProductStatusEnum.UP.getCode())) {
             throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
         //更新
         productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
 
-        return repository.save(productInfo);
+        return super.save(productInfo);
     }
 
     @Override
-    public ProductInfo offSale(String productId) {
-        ProductInfo productInfo = repository.findOne(productId);
+    public boolean offSale(String productId) {
+        ProductInfo productInfo = super.getById(productId);
         if (productInfo == null) {
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIT);
         }
-        if (productInfo.getProductStatusEnum() == ProductStatusEnum.DOWN) {
+        if (productInfo.getProductStatus().equals(ProductStatusEnum.DOWN.getCode())) {
             throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
         //更新
         productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
 
-        return repository.save(productInfo);
+        return super.save(productInfo);
     }
 }

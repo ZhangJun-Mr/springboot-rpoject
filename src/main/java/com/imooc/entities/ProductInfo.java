@@ -1,25 +1,21 @@
 package com.imooc.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.imooc.enums.ProductStatusEnum;
-import com.imooc.utils.EnumUtil;
 import lombok.Data;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by SqMax on 2018/3/17.
  */
-@Entity
 @Data
-@DynamicUpdate
-public class ProductInfo implements Serializable {
-    @Id
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+public class ProductInfo extends BaseEntity {
     private String productId;
 
     /**
@@ -61,8 +57,4 @@ public class ProductInfo implements Serializable {
 
     private Date updateTime;
 
-    @JsonIgnore
-    public ProductStatusEnum getProductStatusEnum() {
-        return EnumUtil.getByCode(productStatus, ProductStatusEnum.class);
-    }
 }

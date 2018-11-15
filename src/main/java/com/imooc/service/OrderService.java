@@ -1,13 +1,15 @@
 package com.imooc.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.imooc.dto.OrderDTO;
+import com.imooc.entities.OrderMaster;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
  * Created by SqMax on 2018/3/18.
  */
-public interface OrderService {
+public interface OrderService{
 
     /**
      * 创建订单
@@ -22,7 +24,7 @@ public interface OrderService {
     /**
      * 查询订单列表
      */
-    Page<OrderDTO> findList(String buyerOpenid, Pageable pageable);
+    IPage<OrderDTO> findList(IPage<OrderMaster> page, String buyerOpenid);
 
     /**
      * 取消订单
@@ -38,9 +40,4 @@ public interface OrderService {
      * 支付订单
      */
     OrderDTO paid(OrderDTO orderDTO);
-
-    /**
-     * 查询订单列表
-     */
-    Page<OrderDTO> findList(Pageable pageable);
 }

@@ -1,4 +1,4 @@
-package com.imooc.repository;
+package com.imooc.mapper;
 
 import com.imooc.entities.OrderDetail;
 import org.junit.Assert;
@@ -19,7 +19,7 @@ import java.util.List;
 public class OrderDetailRepositoryTest {
 
     @Autowired
-    private OrderDetailRepository repository;
+    private OrderDetailMapper repository;
 
     @Test
     public void saveTest(){
@@ -32,7 +32,7 @@ public class OrderDetailRepositoryTest {
         orderDetail.setProductPrice(new BigDecimal(2.2));
         orderDetail.setProductQuantity(3);
 
-        OrderDetail result=repository.save(orderDetail);
+        int result=repository.updateById(orderDetail);
         Assert.assertNotNull(result);
 
     }
