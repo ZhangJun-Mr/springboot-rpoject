@@ -3,6 +3,7 @@ package com.imooc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.converter.OrderMaster2OrderDTOConverter;
 import com.imooc.dto.CartDTO;
 import com.imooc.dto.OrderDTO;
@@ -21,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -126,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public IPage<OrderDTO> findList(IPage<OrderMaster> page, String buyerOpenid) {
+    public IPage<OrderDTO> findList(Page<OrderMaster> page, String buyerOpenid) {
         QueryWrapper<OrderMaster> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(StringUtils.isNotEmpty(buyerOpenid),"buyer_openid", buyerOpenid);
         IPage<OrderMaster> orderMasterPage = orderMasterMapper.selectPage(page,queryWrapper);

@@ -55,7 +55,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductInfoMapper, ProductIn
     }
 
     @Override
-    public IPage<ProductInfo> findAll(IPage<ProductInfo> page, ProductInfo productInfo) {
+    public IPage<ProductInfo> findAll(Page<ProductInfo> page, ProductInfo productInfo) {
         QueryWrapper<ProductInfo> queryWrapper = new QueryWrapper<>();
         return super.page(page, queryWrapper);
     }

@@ -22,7 +22,7 @@ public interface ProductService extends IService<ProductInfo> {
      */
     List<ProductInfo> findUpAll();
 
-    IPage<ProductInfo> findAll(IPage<ProductInfo> page, ProductInfo productInfo);
+    IPage<ProductInfo> findAll(Page<ProductInfo> page, ProductInfo productInfo);
 
     //加库存
     void increaseStock(List<CartDTO> cartDTOList);
