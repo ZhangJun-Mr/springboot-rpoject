@@ -28,7 +28,7 @@
                         </thead>
                         <tbody>
 
-                        <#list orderDTOPage.content as orderDTO>
+                        <#list orderDTOPage.records as orderDTO>
                         <tr>
                             <td>${orderDTO.orderId}</td>
                             <td>${orderDTO.buyerName}</td>
@@ -59,7 +59,7 @@
                         <li><a href="/sell/seller/order/list?page=${currentPage - 1}&size=${size}">上一页</a></li>
                     </#if>
 
-                    <#list 1..orderDTOPage.getTotalPages() as index>
+                    <#list 1..orderDTOPage.total as index>
                         <#if currentPage == index>
                             <li class="disabled"><a href="#">${index}</a></li>
                         <#else>
@@ -67,7 +67,7 @@
                         </#if>
                     </#list>
 
-                    <#if currentPage gte orderDTOPage.getTotalPages()>
+                    <#if currentPage gte orderDTOPage.total>
                         <li class="disabled"><a href="#">下一页</a></li>
                     <#else>
                         <li><a href="/sell/seller/order/list?page=${currentPage + 1}&size=${size}">下一页</a></li>

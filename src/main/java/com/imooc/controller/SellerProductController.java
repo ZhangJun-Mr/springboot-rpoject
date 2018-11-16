@@ -1,5 +1,8 @@
 package com.imooc.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.imooc.entities.OrderMaster;
 import com.imooc.entities.ProductCategory;
 import com.imooc.entities.ProductInfo;
 import com.imooc.exception.SellException;
@@ -10,8 +13,6 @@ import com.imooc.utils.KeyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -51,11 +52,11 @@ public class SellerProductController {
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
                              Map<String, Object> map) {
-        PageRequest request = new PageRequest(page - 1, size);
-        Page<ProductInfo> productInfoPage = productService.findAll(request);
+        Page<ProductInfo> orderMasterPage = new Page<>();
+        IPage<ProductInfo> productInfoPage = productService.findAll(orderMasterPage, null);
         map.put("productInfoPage", productInfoPage);
-        map.put("currentPage", page);
-        map.put("size", size);
+        map.put("currentPage", productInfoPage.getCurrent());
+        map.put("size", productInfoPage.getTotal());
         return new ModelAndView("product/list", map);
     }
 

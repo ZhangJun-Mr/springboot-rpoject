@@ -128,12 +128,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public IPage<OrderDTO> findList(Page<OrderMaster> page, String buyerOpenid) {
         QueryWrapper<OrderMaster> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(StringUtils.isNotEmpty(buyerOpenid),"buyer_openid", buyerOpenid);
-        IPage<OrderMaster> orderMasterPage = orderMasterMapper.selectPage(page,queryWrapper);
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getRecords());
-        IPage<OrderDTO> orderDTOIPage = null ;
-        BeanUtils.copyProperties(page, orderDTOIPage);
+        queryWrapper.eq(StringUtils.isNotEmpty(buyerOpenid), "buyer_openid", buyerOpenid);
 
+        IPage<OrderMaster> orderMasterPage = orderMasterMapper.selectPage(page, queryWrapper);
+        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getRecords());
+        IPage<OrderDTO> orderDTOIPage = new Page<>();
+        BeanUtils.copyProperties(page, orderDTOIPage);
+        orderDTOIPage.setRecords(orderDTOList);
         return orderDTOIPage;
     }
 

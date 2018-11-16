@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 public class SellerServiceImpl implements SellerService {
 
     @Autowired
-    private SellerInfoMapper repository;
+    private SellerInfoMapper sellerInfoMapper;
 
     @Override
     public SellerInfo findSellerInfoByOpenid(String openid) {
-        return repository.findByOpenid(openid);
+        return sellerInfoMapper.selectById(openid);
     }
 }

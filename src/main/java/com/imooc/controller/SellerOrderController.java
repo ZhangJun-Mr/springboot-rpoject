@@ -1,13 +1,14 @@
 package com.imooc.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.dto.OrderDTO;
+import com.imooc.entities.OrderMaster;
 import com.imooc.enums.ResultEnum;
 import com.imooc.exception.SellException;
 import com.imooc.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,11 +41,12 @@ public class SellerOrderController {
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
                              Map<String, Object> map) {
 
-        PageRequest request = new PageRequest(page - 1, size);
-        Page<OrderDTO> orderDTOPage = orderService.findList(request);
+        Page<OrderMaster> orderMasterPage = new Page<>();
+        orderMasterPage.setPages(page-1).setSize(size);
+        IPage<OrderDTO> orderDTOPage = orderService.findList(orderMasterPage, null);
         map.put("orderDTOPage", orderDTOPage);
-        map.put("currentPage", page);
-        map.put("size", size);
+        map.put("currentPage", orderDTOPage.getCurrent());
+        map.put("size", orderDTOPage.getTotal());
         return new ModelAndView("order/list", map);
     }
 

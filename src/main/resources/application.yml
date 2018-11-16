@@ -13,6 +13,7 @@ spring:
     port: 6379
 server:
   context-path: /sell
+  port: 8089
 
 # 下面是微信相关的配置
 wechat:

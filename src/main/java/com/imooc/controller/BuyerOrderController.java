@@ -1,8 +1,11 @@
 package com.imooc.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.VO.ResultVO;
 import com.imooc.converter.OrderForm2OrderDTOConverter;
 import com.imooc.dto.OrderDTO;
+import com.imooc.entities.OrderMaster;
 import com.imooc.enums.ResultEnum;
 import com.imooc.exception.SellException;
 import com.imooc.form.OrderForm;
@@ -11,7 +14,6 @@ import com.imooc.service.OrderService;
 import com.imooc.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -69,10 +71,11 @@ public class BuyerOrderController {
             log.error("【查询订单列表】openid为空");
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
-        PageRequest request = new PageRequest(page, size);
-        Page<OrderDTO> orderDTOPage = orderService.findList(openid, request);
+        Page<OrderMaster> orderMasters =  new Page<>();
+        orderMasters.setPages(page).setSize(size);
+        IPage<OrderDTO> orderDTOPage = orderService.findList(orderMasters, openid);
 
-        return ResultVOUtil.success(orderDTOPage.getContent());
+        return ResultVOUtil.success(orderDTOPage.getRecords());
 //        return ResultVOUtil.success();
     }
 

@@ -1,7 +1,6 @@
 package com.imooc.entities;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,10 +8,11 @@ import java.util.Date;
 
 @Data
 public class BaseEntity<T> implements Serializable {
-    private Date createTime;
 
-    private Date updateTime;
+    @JSONField(format = "yyyy-MM-dd hh:mm:ss")
+    public Date createTime;
 
-/*    @TableField(exist = false)
-    private Page<T> page;*/
+    @JSONField(format = "yyyy-MM-dd hh:mm:ss")
+    public Date updateTime;
+
 }

@@ -53,8 +53,5 @@ public class ProductInfo extends BaseEntity {
      **/
     private Integer categoryType;
 
-    private Date createTime;
-
-    private Date updateTime;
 
 }
