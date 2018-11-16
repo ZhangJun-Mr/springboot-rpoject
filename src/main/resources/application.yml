@@ -1,9 +1,9 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://127.0.0.1/sell?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://127.0.0.1/sell?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true
   jackson:
@@ -12,8 +12,9 @@ spring:
     host: 127.0.0.1
     port: 6379
 server:
-  context-path: /sell
   port: 8089
+  servlet:
+    context-path: /sell
 
 # 下面是微信相关的配置
 wechat:
@@ -32,9 +33,9 @@ wechat:
   templateId:
     orderStatus: GoCullfix05R-rCibvoyI87ZUg50cyieKA5AyX7pPzo
 
-projectUrl:
-  wechatMpAuthorize: http://sqmax.natapp1.cc
-  wechatOpenAuthorize: http://sqmax.natapp1.cc
+project-url:
+  wechat-mp-authorize: http://sqmax.natapp1.cc
+  wechat-open-authorize: http://sqmax.natapp1.cc
   sell: http://sqmax.natapp1.cc
 mybatis-plus:
   configuration:

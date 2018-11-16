@@ -1,5 +1,6 @@
 package com.imooc.entities;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,6 +17,7 @@ public class ProductCategory extends BaseEntity{
     /**
      * 类目id.
      **/
+    @TableId
     private Integer categoryId;
     /**
      * 类目名字

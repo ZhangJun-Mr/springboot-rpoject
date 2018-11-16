@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Created by SqMax on 2018/4/1.
  */
 @Data
-@ConfigurationProperties(prefix = "projectUrl")
+@ConfigurationProperties(prefix = "project-url")
 @Component
 public class ProjectUrlConfig {
 

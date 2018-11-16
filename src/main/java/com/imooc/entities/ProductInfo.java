@@ -1,5 +1,6 @@
 package com.imooc.entities;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.imooc.enums.ProductStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ public class ProductInfo extends BaseEntity {
     /**
      * 名字
      **/
+    @TableId
     private String productName;
 
     /**

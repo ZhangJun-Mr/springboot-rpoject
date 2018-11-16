@@ -1,5 +1,6 @@
 package com.imooc.entities;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.PayStatusEnum;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class OrderMaster extends BaseEntity {
     /**
      * 订单
      **/
+    @TableId
     private String orderId;
 
     /**
