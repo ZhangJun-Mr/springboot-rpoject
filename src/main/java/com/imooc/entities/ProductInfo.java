@@ -17,12 +17,14 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 public class ProductInfo extends BaseEntity {
+
+    @TableId
     private String productId;
 
     /**
      * 名字
      **/
-    @TableId
+
     private String productName;
 
     /**

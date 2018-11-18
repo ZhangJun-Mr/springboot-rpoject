@@ -9,8 +9,7 @@
     <sql id="QueryJoins">
 
     </sql>
-
-
+    <select id="findByOrderId" resultType="com.imooc.entities.OrderDetail"></select>
 
 
 </mapper>
