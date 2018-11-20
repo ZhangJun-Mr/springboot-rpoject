@@ -47,6 +47,4 @@ mybatis-plus:
 # 打印sql日志
 logging:
   level:
-    com:
-      imooc:
-        mapper: debug
+    com.imooc.mapper: debug
