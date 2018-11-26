@@ -26,8 +26,8 @@ public class AlipayController {
     @Autowired
     AlipayConfig alipayConfig;
 
-    @PostMapping("pay")
-    String pay(HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("pcPay")
+    String pcPay(HttpServletRequest request, HttpServletResponse response) {
         return alipayService.pcPay();
     }
 
@@ -41,5 +41,10 @@ public class AlipayController {
             throw e;
         }
 
+    }
+
+    @PostMapping("mobilePay")
+    String mobilePay(HttpServletRequest request, HttpServletResponse response) {
+        return alipayService.mobilePay();
     }
 }
