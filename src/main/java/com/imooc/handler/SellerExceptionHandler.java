@@ -1,5 +1,6 @@
 package com.imooc.handler;
 
+import com.alipay.api.AlipayApiException;
 import com.imooc.VO.ResultVO;
 import com.imooc.config.ProjectUrlConfig;
 import com.imooc.exception.ResponseBankException;
@@ -26,13 +27,8 @@ public class SellerExceptionHandler {
     //拦截登录异常
     //http://sqmax.natapp1.cc/sell/wechat/qrAuthorize?returnUrl=http://sqmax.natapp1.cc/sell/seller/login
     @ExceptionHandler(value = SellerAuthorizeException.class)
-    public ModelAndView handlerAuthorizeException() {
-        return new ModelAndView("redirect:"
-                .concat(projectUrlConfig.getWechatOpenAuthorize())
-                .concat("/sell/wechat/qrAuthorize")
-                .concat("?returnUrl=")
-                .concat(projectUrlConfig.getSell())
-                .concat("/sell/seller/login"));
+    public void handlerAuthorizeException() {
+
     }
 
     @ExceptionHandler(value = SellException.class)
@@ -45,5 +41,10 @@ public class SellerExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public void handleResponseBankException() {
 
+    }
+    @ExceptionHandler(value = AlipayApiException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleAlipayApiException(AlipayApiException e) {
+        return e.getErrMsg();
     }
 }

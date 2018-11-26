@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
 
         //1.查询商品（数量，价格）
         for (OrderDetail orderDetail : orderDTO.getOrderDetailList()) {
-            ProductInfo productInfo = productService.findOne(orderDetail.getProductId());
+            ProductInfo productInfo = productService.getById(orderDetail.getProductId());
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIT);
 //                throw new ResponseBankException();
@@ -114,7 +114,9 @@ public class OrderServiceImpl implements OrderService {
         if (orderMaster == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
-        List<OrderDetail> orderDetailList = orderDetailMapper.findByOrderId(orderId);
+        QueryWrapper<OrderDetail> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(StringUtils.isNotEmpty(orderId), "order_id", orderId);
+        List<OrderDetail> orderDetailList = orderDetailMapper.selectList(queryWrapper);
         if (CollectionUtils.isEmpty(orderDetailList)) {
             throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
         }
